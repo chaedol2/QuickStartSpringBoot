@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+	<!-- 스프링 부트가 기본으로 제공하는 설정파일 -->
+	<!-- <include resource="org/springframework/boot/logging/logback/base.xml" />
+	<logger name="com.rubypaper" level="DEBUG" /> -->
+	
+	<!-- 직접 모든걸 제어하고싶을 떄
+	appender는 어디에, 어떤 패턴으로 로그를 출력할것인가를 결정한다. -->
+	<appender name="fileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
+	<file>src/main/resources/logs/board_log.log</file>
+		
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>
+				src/main/resources/logs/myboard.%d{yyyy-MM-dd}.log.gz
+			</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<encoder>
+			<pattern>
+			%d{yyyy:MM:dd HH:mm:ss.SSS} %-5level --- [%thread] %logger{35} : %msg %n
+			</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+			%d{yyyy:MM:dd HH:mm:ss.SSS} %-5level --- [%thread] %logger{35} : %msg %n
+			</pattern>
+		</encoder>
+	</appender>
+	
+	<logger name="com.rubypaper" level="warn" additivity="false">
+		<appender-ref ref="consoleAppender" />
+		<appender-ref ref="fileAppender" />
+	</logger>
+	
+	<root level="error">
+		<appender-ref ref="consoleAppender" />
+	</root>
+</configuration>
